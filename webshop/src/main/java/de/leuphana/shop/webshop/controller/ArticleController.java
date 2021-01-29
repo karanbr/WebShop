@@ -2,12 +2,10 @@ package de.leuphana.shop.webshop.controller;
 
 import de.leuphana.shop.webshop.model.ArticleDto;
 import de.leuphana.shop.webshop.services.ArticleService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -24,5 +22,30 @@ public class ArticleController {
     @GetMapping({"/{articleId}"})
     public ResponseEntity<ArticleDto> getArticle(@PathVariable("articleId") UUID articleId) {
         return new ResponseEntity<>(articleService.getArticleById(articleId), HttpStatus.OK);
+    }
+
+    @PostMapping // create a new Article
+    public ResponseEntity handlePost(@RequestBody ArticleDto articleDto) {
+
+        ArticleDto savedArticle = articleService.saveNewArticle(articleDto);
+
+        // ResponseEntity needs a location Header
+        HttpHeaders headers = new HttpHeaders();
+        // todo Add host name to url
+        headers.add("Location", "/api/v1/article" + savedArticle.getId().toString());
+
+        return new ResponseEntity(headers, HttpStatus.CREATED);
+    }
+
+    @PutMapping({"/{articleId}"})
+    public ResponseEntity handleUpdate(@PathVariable("articleId") UUID articleId, @RequestBody ArticleDto articleDto) {
+        articleService.updateArticle(articleId, articleDto);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping({"/{articleId}"})
+    @ResponseStatus(HttpStatus.NO_CONTENT) // Alternative to returning the Status in the Method. THis way we simply use void and @RequestStatus
+    public void handleDelete(@PathVariable("articleId") UUID articleId) {
+        articleService.deleteById(articleId);
     }
 }

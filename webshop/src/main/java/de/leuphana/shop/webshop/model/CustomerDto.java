@@ -5,23 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-// -> Builder Pattern automatically implemented
-// From Lombok -> Creates getters and setters
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ArticleDto {
+public class CustomerDto {
 
-    private UUID id;
-    private String manufacturer;
+    private UUID customerId;
     private String name;
-    private Long price;
-
-
+    private String address;
 
 }
