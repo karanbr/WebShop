@@ -7,6 +7,7 @@ import java.util.UUID;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
+    // Builder
     @Override
     public ArticleDto getArticleById(UUID articleId) {
         return ArticleDto.builder()
