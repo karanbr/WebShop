@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/article")
@@ -25,7 +26,7 @@ public class ArticleController {
     }
 
     @PostMapping // create a new Article
-    public ResponseEntity handlePost(@RequestBody ArticleDto articleDto) {
+    public ResponseEntity handlePost(@Valid @RequestBody ArticleDto articleDto) {
 
         ArticleDto savedArticle = articleService.saveNewArticle(articleDto);
 
@@ -38,7 +39,7 @@ public class ArticleController {
     }
 
     @PutMapping({"/{articleId}"})
-    public ResponseEntity handleUpdate(@PathVariable("articleId") UUID articleId, @RequestBody ArticleDto articleDto) {
+    public ResponseEntity handleUpdate(@PathVariable("articleId") UUID articleId, @Valid @RequestBody ArticleDto articleDto) {
         articleService.updateArticle(articleId, articleDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

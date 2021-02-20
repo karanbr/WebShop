@@ -42,6 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void updateArticle(UUID articleId, ArticleDto articleDto) {
         // todo impl would update a real article
+
     }
 
     @Override
