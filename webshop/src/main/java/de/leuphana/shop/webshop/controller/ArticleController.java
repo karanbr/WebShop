@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/article")
@@ -39,7 +42,7 @@ public class ArticleController {
     }
 
     @PutMapping({"/{articleId}"})
-    public ResponseEntity handleUpdate(@PathVariable("articleId") UUID articleId, @Valid @RequestBody ArticleDto articleDto) {
+    public ResponseEntity handleUpdate (@PathVariable("articleId") UUID articleId, @Valid @RequestBody ArticleDto articleDto) {
         articleService.updateArticle(articleId, articleDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -48,5 +51,16 @@ public class ArticleController {
     @ResponseStatus(HttpStatus.NO_CONTENT) // Alternative to returning the Status in the Method. THis way we simply use void and @RequestStatus
     public void handleDelete(@PathVariable("articleId") UUID articleId) {
         articleService.deleteById(articleId);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<List> validationErrorHandler(ConstraintViolationException e){
+        List<String> errors = new ArrayList<>(e.getConstraintViolations().size());
+
+        e.getConstraintViolations().forEach(constraintViolation -> {
+            errors.add(constraintViolation.getPropertyPath() + " : " + constraintViolation.getMessage());
+        });
+
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }
