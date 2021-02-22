@@ -2,6 +2,8 @@ package de.leuphana.shop.webshop.controller;
 
 import de.leuphana.shop.webshop.model.ArticleDto;
 import de.leuphana.shop.webshop.services.ArticleService;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RequestMapping("/api/v1/article")
 @RestController
 public class ArticleController {
 
     private final ArticleService articleService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService) { // Instead of this constructor we can also use lomboks @RequiredArgsConstructor
         this.articleService = articleService;
     }
 
@@ -31,7 +34,8 @@ public class ArticleController {
     @PostMapping // create a new Article
     public ResponseEntity handlePost(@Valid @RequestBody ArticleDto articleDto) {
 
-        ArticleDto savedArticle = articleService.saveNewArticle(articleDto);
+        log.debug("In handlePost");
+        val savedArticle = articleService.saveNewArticle(articleDto); // With Project Lombok, the specific type can be replaced by val
 
         // ResponseEntity needs a location Header
         HttpHeaders headers = new HttpHeaders();
