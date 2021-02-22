@@ -1,4 +1,4 @@
-package de.leuphana.shop.webshop.model;
+package de.leuphana.shop.webshop.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,19 +7,15 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-// -> Builder Pattern automatically implemented
-// From Lombok -> Creates getters and setters
+// Article entity for persistence layer -> e.g. JPA or MongoDB
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ArticleDto {
+public class Article {
 
     private UUID id;
-    private String manufacturer;
     private String name;
+    private String manufacturer;
     private Long price;
-
-
-
 }
